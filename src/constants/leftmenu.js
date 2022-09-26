@@ -175,4 +175,70 @@ export const leftmenu = [
       },
     ],
   },
+  {
+    'Forms Validation': [
+      {
+        label: 'Forms Validation',
+        icon: CommonIcons.FormValidation,
+        path: RouteBase.Home,
+      },
+      {
+        label: 'Forms Wizard',
+        icon: CommonIcons.FormsWizard,
+        path: RouteBase.Home,
+      },
+      {
+        label: 'Layout',
+        icon: CommonIcons.Layout,
+        children: [
+          {
+            label: 'Basic',
+          },
+          {
+            label: 'Multi Column',
+          },
+          {
+            label: 'Action Bar',
+          },
+          {
+            label: 'Sticky Bar',
+            children: [
+              {
+                label: 'Sticky Bar jr',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: 'Plugins',
+        icon: CommonIcons.Plugins,
+        children: [
+          {
+            label: 'Mask',
+          },
+          {
+            label: 'Clipboard',
+          },
+          {
+            label: 'reCaptcha',
+          },
+          {
+            label: 'Editor',
+          },
+          {
+            label: 'Dropzone',
+          },
+        ],
+      },
+      {
+        label: 'React Table',
+        icon: CommonIcons.ReactTable,
+      },
+      {
+        label: 'MUI Table',
+        icon: CommonIcons.MUITable,
+      },
+    ],
+  },
 ];

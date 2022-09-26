@@ -44,4 +44,20 @@ export const theme = createTheme({
       lineHeight: '22px',
     },
   },
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: '5px',
+          border: '1px solid #69c0ff',
+          position: 'absolute',
+          right: '10px',
+          height: '24px',
+          backgroundColor: '#e6f7ff',
+          color: '#1890ff',
+          maxWidth: '65px',
+        },
+      },
+    },
+  },
 });
