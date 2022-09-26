@@ -5,7 +5,7 @@ import CommonStyles from 'components/CommonStyles';
 import CommonIcons from 'components/CommonIcons';
 import { List, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
 import { Fragment } from 'react';
-import LeftMenuItem from './leftmenuitem';
+import LeftMenuItem from './LeftMenuItem';
 
 const useStyles = makeStyles((theme) => {
   return {};
@@ -16,7 +16,6 @@ const LeftMenu = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { leftMenu } = props;
-  console.log('left menu:', leftMenu);
 
   //! Function
 

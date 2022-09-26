@@ -25,9 +25,6 @@ const useStyles = makeStyles((theme) => {
         background: `${theme.custom.colors.lightblue} !important`,
       },
     },
-    chip: {
-      borderRadius: '10px',
-    },
   };
 });
 
@@ -82,21 +79,7 @@ const LeftMenuItem = (props) => {
                   <CommonIcons.ExpandMore className={classes.expandIcon} />
                 )
               ) : null}
-              {elm.chip && (
-                <Chip
-                  label={elm.chip}
-                  sx={{
-                    borderRadius: '5px',
-                    border: '1px solid #69c0ff',
-                    position: 'absolute',
-                    right: '10px',
-                    height: '24px',
-                    backgroundColor: '#e6f7ff',
-                    color: '#1890ff',
-                    maxWidth: '65px',
-                  }}
-                />
-              )}
+              {elm.chip && <Chip label={elm.chip} className={classes.chip} />}
             </ListItemButton>
             {elm.children && (
               <Collapse in={open[index]} timeout="auto" unmountOnExit>

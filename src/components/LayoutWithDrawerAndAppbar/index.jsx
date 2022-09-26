@@ -5,19 +5,16 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
-import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import CommonIcons from 'components/CommonIcons';
 import PropTypes from 'prop-types';
+import SimpleBarReact from 'simplebar-react';
+
+import 'simplebar/src/simplebar.css';
 
 import Logo from './Assets/logo.png';
-import LeftMenu from './Components/leftmenu';
+import LeftMenu from './Components/LeftMenu';
 import { leftmenu } from 'constants/leftmenu';
 
 const drawerWidth = 260;
@@ -93,7 +90,9 @@ const LayoutWithDrawerAndAppbar = (props) => {
         <div className="topDrawer_logo"></div>
         {topDrawer}
       </Toolbar>
-      <LeftMenu leftMenu={leftmenu} />
+      <SimpleBarReact style={{ maxHeight: 'calc(100vh - 64px)' }}>
+        <LeftMenu leftMenu={leftmenu} />
+      </SimpleBarReact>
     </div>
   );
 
