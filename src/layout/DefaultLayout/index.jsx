@@ -6,24 +6,17 @@ import LayoutWithDrawerAndAppbar from 'components/LayoutWithDrawerAndAppbar';
 import CommonIcons from 'components/CommonIcons';
 import { RouteBase } from 'constants/routeUrl';
 import Header from 'components/Header';
-
-const leftMenu = [
-  {
-    label: 'Home',
-    icon: CommonIcons.Help,
-    path: RouteBase.Home,
-  },
-  {
-    label: 'Dashboard',
-    icon: CommonIcons.Help,
-    path: RouteBase.Dashboard,
-  },
-];
+import CommonStyles from 'components/CommonStyles';
+import { leftmenu } from 'constants/leftmenu';
 
 const DefaultLayout = (props) => {
   return (
     <Fragment>
-      <LayoutWithDrawerAndAppbar topDrawer={<div>This is TOP Drawer</div>} header={<Header />} leftMenu={leftMenu}>
+      <LayoutWithDrawerAndAppbar
+        topDrawer={<CommonStyles.Typography variant="h4">Mantis</CommonStyles.Typography>}
+        header={<Header />}
+        leftMenu={leftmenu}
+      >
         <Suspense fallback="Loading...">
           <Routes>
             {routes.map((route, idx) => {

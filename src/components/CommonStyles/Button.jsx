@@ -28,6 +28,8 @@ const StyledButton = (props) => {
       variant="contained"
       sx={{
         textTransform: 'initial',
+        minWidth: 36,
+        minHeight: 36,
         ...style,
       }}
       className={classNames(classes.root, className)}

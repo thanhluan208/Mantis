@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => {
     },
     eachRow: {
       marginBottom: theme.spacing(),
+     
     },
   };
 });
