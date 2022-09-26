@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
+      background: theme.custom.colors.black,
     },
   };
 });
@@ -23,12 +24,16 @@ const Header = (props) => {
   //! Function
 
   //! Render
-  return <div className={classes.footer}>
-    <div className={classes.left}>This is HEADER</div>
-    <div className={classes.right}>
-      <CommonStyles.Button variant="outline" onClick={logout}>Logout</CommonStyles.Button>
+  return (
+    <div className={classes.footer}>
+      <div className={classes.left}>This is HEADER</div>
+      <div className={classes.right}>
+        <CommonStyles.Button variant="outline" onClick={logout}>
+          Logout
+        </CommonStyles.Button>
+      </div>
     </div>
-  </div>;
+  );
 };
 
 export default Header;

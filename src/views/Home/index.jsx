@@ -1,19 +1,37 @@
 import EachTodo from 'components/EachTodo';
-import useGetListTodos from 'hooks/todos/useGetListTodos';
+import { useGetListTodos } from 'hooks/todos/useTodoHooks';
 import { useAuthentication } from 'providers/AuthenticationProvider';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const HomePage = (props) => {
   const { t } = useTranslation();
   const { logout } = useAuthentication();
-
-  const [data, loading, , refetch] = useGetListTodos(0);
+  const [state, setState] = useState('');
+  const { data: resListTodos, isLoading: loading, error, refetch, ...rest } = useGetListTodos();
+  const data = resListTodos?.data || [];
+  console.log('rest:', rest);
+  const searchRef = useRef();
 
   //! Function
   const onLogout = () => {
     logout();
   };
+
+  const handleSearch = (value) => {
+    setState(value);
+    searchRef.current && clearTimeout(searchRef.current);
+    searchRef.current = setTimeout(() => {
+      window.localStorage.setItem('search', value);
+    }, 500);
+  };
+
+  useEffect(() => {
+    const search = window.localStorage.getItem('search');
+    if (search) {
+      setState(search);
+    }
+  }, []);
 
   //! Render
   return (
@@ -22,11 +40,12 @@ const HomePage = (props) => {
       <button
         type="button"
         onClick={() => {
-          refetch();
+          setState(!state);
         }}
       >
         Stress test useSafeEffect
       </button>
+      <input onChange={(e) => handleSearch(e.target.value)} value={state} />
       <button onClick={onLogout}>Logout</button>
       {loading ? (
         'Loading ...'
