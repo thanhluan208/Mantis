@@ -16,7 +16,11 @@ import { makeStyles } from '@mui/styles';
 import CommonIcons from 'components/CommonIcons';
 import PropTypes from 'prop-types';
 
-const drawerWidth = 240;
+import Logo from './Assets/logo.png';
+import LeftMenu from './Components/leftmenu';
+import { leftmenu } from 'constants/leftmenu';
+
+const drawerWidth = 260;
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -26,7 +30,34 @@ const useStyles = makeStyles((theme) => {
       width: '100%',
 
       '&.active': {
-        backgroundColor: theme.custom.colors.lightGrey,
+        backgroundColor: theme.custom.colors.black,
+        color: theme.custom.colors.white,
+        '& .icon': {
+          color: theme.custom.colors.white,
+        },
+      },
+    },
+    toolbar: {
+      background: theme.custom.colors.black,
+      color: theme.custom.colors.white,
+    },
+    topDrawer: {
+      background: theme.custom.colors.white,
+      border: 0,
+      display: 'flex',
+      position: 'sticky !important',
+      top: 0,
+      zIndex: 2,
+      padding: '10px 25px',
+      gap: '10px',
+      fontWeight: 'bold',
+      fontSize: '1.5rem',
+      '& .topDrawer_logo': {
+        height: '40px',
+        width: '40px',
+        backgroundImage: `url(${Logo})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       },
     },
   };
@@ -58,20 +89,11 @@ const LayoutWithDrawerAndAppbar = (props) => {
   //! Render
   const drawer = (
     <div>
-      <Toolbar>{topDrawer}</Toolbar>
-      <Divider />
-      <List>
-        {leftMenu.map((item) => (
-          <ListItem key={item.label} disablePadding>
-            <NavLink to={item.path} end className={classes.eachLink}>
-              <ListItemButton>
-                {item.icon && <ListItemIcon>{<item.icon />}</ListItemIcon>}
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </NavLink>
-          </ListItem>
-        ))}
-      </List>
+      <Toolbar className={classes.topDrawer}>
+        <div className="topDrawer_logo"></div>
+        {topDrawer}
+      </Toolbar>
+      <LeftMenu leftMenu={leftmenu} />
     </div>
   );
 
@@ -87,9 +109,8 @@ const LayoutWithDrawerAndAppbar = (props) => {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <IconButton
-            color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
