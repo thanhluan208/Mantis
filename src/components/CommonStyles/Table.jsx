@@ -80,7 +80,7 @@ const EnhancedTableHead = (props) => {
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
-            padding={hasCheckbox ? (headCell.disablePadding ? 'none' : 'normal') : 'normal'}
+            padding={hasCheckbox ? 'checkbox' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -156,12 +156,12 @@ EnhancedTableToolbar.propTypes = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  'table-row': {
-    '&:nth-child(odd)': {
-      backgroundColor: theme.custom.colors.black,
-      color: `${theme.custom.colors.white} !important`,
-    },
-  },
+  // 'table-row': {
+  //   '&:nth-child(odd)': {
+  //     backgroundColor: theme.custom.colors.black,
+  //     color: `${theme.custom.colors.white} !important`,
+  //   },
+  // },
 }));
 
 const EnhancedTable = ({
@@ -174,6 +174,7 @@ const EnhancedTable = ({
   handleChangePage,
   handleChangeRowsPerPage,
   handleChangeDense,
+  handleDelete,
 }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -182,56 +183,6 @@ const EnhancedTable = ({
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  // const handleRequestSort = (event, property) => {
-  //   alert('SORTING!!!');
-  // };
-
-  // const handleSelectAllClick = (event) => {
-  //   if (event.target.checked) {
-  //     const newSelected = body.map((n) => n.name);
-  //     setSelected(newSelected);
-  //     return;
-  //   }
-  //   setSelected([]);
-  // };
-
-  // const handleClick = (event, name) => {
-  //   alert(`SELECT ROW!!! name: ${name}`);
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected = [];
-
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-  //   }
-
-  //   setSelected(newSelected);
-  // };
-
-  // const handleChangePage = (event, newPage) => {
-  //   alert('CHANGE PAGE!!!');
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   alert('CHANGE ROWS PER PAGE!!!', event);
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
-
-  const handleDelete = () => {
-    alert(`Select ${selected.length} items: ${JSON.stringify(selected)}`);
-  };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
@@ -256,56 +207,48 @@ const EnhancedTable = ({
               hasCheckbox={hasCheckbox}
             />
             <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
-              {
-                // stableSort(data, getComparator(order, orderBy))
-                //   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                data.map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+              {data.map((row, index) => {
+                const isItemSelected = isSelected(row.name);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.name)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
-                      className={classes['table-row']}
-                    >
-                      {columns.map((column) => {
-                        return (
-                          <Fragment key={column.id}>
-                            {hasCheckbox && (
-                              <TableCell padding="checkbox">
-                                <Checkbox
-                                  color="primary"
-                                  checked={isItemSelected}
-                                  inputProps={{
-                                    'aria-labelledby': labelId,
-                                  }}
-                                />
-                              </TableCell>
-                            )}
-
-                            <TableCell
-                              component={column?.component || 'th'}
-                              id={column.id}
-                              scope="row"
-                              padding={hasCheckbox ? 'none' : 'normal'}
-                            >
-                              {column?.Cell ? column.Cell(row) : row[column.id]}
-                            </TableCell>
-                          </Fragment>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })
-              }
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.name)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.name}
+                    selected={isItemSelected}
+                    className={classes['table-row']}
+                  >
+                    {hasCheckbox && (
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            'aria-labelledby': labelId,
+                          }}
+                        />
+                      </TableCell>
+                    )}
+                    {columns.map((column) => {
+                      return (
+                        <TableCell
+                          component={column?.component || 'th'}
+                          id={column.id}
+                          scope="row"
+                          key={column.id}
+                          padding={hasCheckbox ? 'checkbox' : 'normal'}
+                        >
+                          {column?.Cell ? column.Cell(row) : row[column.id]}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
