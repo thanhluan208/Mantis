@@ -21,6 +21,8 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { makeStyles } from '@mui/styles';
+import { Fragment } from 'react';
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -53,7 +55,7 @@ const stableSort = (array, comparator) => {
 };
 
 const EnhancedTableHead = (props) => {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells } = props;
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells, hasCheckbox } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -61,22 +63,24 @@ const EnhancedTableHead = (props) => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
+        {hasCheckbox && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              color="primary"
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{
+                'aria-label': 'select all desserts',
+              }}
+            />
+          </TableCell>
+        )}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            padding={hasCheckbox ? (headCell.disablePadding ? 'none' : 'normal') : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -151,60 +155,79 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ data }) {
+const useStyles = makeStyles((theme) => ({
+  'table-row': {
+    '&:nth-child(odd)': {
+      backgroundColor: theme.custom.colors.black,
+      color: `${theme.custom.colors.white} !important`,
+    },
+  },
+}));
+
+const EnhancedTable = ({
+  columns = [],
+  data = [],
+  hasCheckbox,
+  handleRequestSort,
+  handleSelectAllClick,
+  handleClick,
+  handleChangePage,
+  handleChangeRowsPerPage,
+  handleChangeDense,
+}) => {
+  const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { headCells, body } = data;
 
-  const handleRequestSort = (event, property) => {
-    alert('SORTING!!!');
-  };
+  // const handleRequestSort = (event, property) => {
+  //   alert('SORTING!!!');
+  // };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = body.map((n) => n.name);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
+  // const handleSelectAllClick = (event) => {
+  //   if (event.target.checked) {
+  //     const newSelected = body.map((n) => n.name);
+  //     setSelected(newSelected);
+  //     return;
+  //   }
+  //   setSelected([]);
+  // };
 
-  const handleClick = (event, name) => {
-    alert(`SELECT ROW!!! name: ${name}`);
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
+  // const handleClick = (event, name) => {
+  //   alert(`SELECT ROW!!! name: ${name}`);
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+  //   }
 
-    setSelected(newSelected);
-  };
+  //   setSelected(newSelected);
+  // };
 
-  const handleChangePage = (event, newPage) => {
-    alert('CHANGE PAGE!!!');
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   alert('CHANGE PAGE!!!');
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    alert('CHANGE ROWS PER PAGE!!!', event);
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   alert('CHANGE ROWS PER PAGE!!!', event);
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
+  // const handleChangeDense = (event) => {
+  //   setDense(event.target.checked);
+  // };
 
   const handleDelete = () => {
     alert(`Select ${selected.length} items: ${JSON.stringify(selected)}`);
@@ -213,8 +236,9 @@ export default function EnhancedTable({ data }) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - body.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
+  //! Render
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -227,15 +251,17 @@ export default function EnhancedTable({ data }) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={body.length}
-              headCells={headCells}
+              rowCount={data.length}
+              headCells={columns}
+              hasCheckbox={hasCheckbox}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(body, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
+              {
+                // stableSort(data, getComparator(order, orderBy))
+                //   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                data.map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -248,26 +274,38 @@ export default function EnhancedTable({ data }) {
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
+                      className={classes['table-row']}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      {columns.map((column) => {
+                        return (
+                          <Fragment key={column.id}>
+                            {hasCheckbox && (
+                              <TableCell padding="checkbox">
+                                <Checkbox
+                                  color="primary"
+                                  checked={isItemSelected}
+                                  inputProps={{
+                                    'aria-labelledby': labelId,
+                                  }}
+                                />
+                              </TableCell>
+                            )}
+
+                            <TableCell
+                              component={column?.component || 'th'}
+                              id={column.id}
+                              scope="row"
+                              padding={hasCheckbox ? 'none' : 'normal'}
+                            >
+                              {column?.Cell ? column.Cell(row) : row[column.id]}
+                            </TableCell>
+                          </Fragment>
+                        );
+                      })}
                     </TableRow>
                   );
-                })}
+                })
+              }
               {emptyRows > 0 && (
                 <TableRow
                   style={{
@@ -283,7 +321,7 @@ export default function EnhancedTable({ data }) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={body.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -293,4 +331,6 @@ export default function EnhancedTable({ data }) {
       <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
     </Box>
   );
-}
+};
+
+export default EnhancedTable;
