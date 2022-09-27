@@ -65,13 +65,57 @@ const rows = [
 const Dashboard = (props) => {
   const { data: resListTodos, isLoading, error, refetch } = useGetListTodos();
 
+  const data = [
+    {
+      id: 1,
+      name: 'Ahihi',
+      age: 3,
+      year: 2022,
+    },
+    {
+      id: 2,
+      name: 'Ahihi 2',
+      age: 4,
+      year: 2022,
+    },
+    {
+      id: 3,
+      name: 'Ahihi 3',
+      age: 5,
+      year: 2022,
+    },
+  ];
+
+  const columns = [
+    {
+      label: 'ID',
+      id: 'id',
+    },
+    {
+      label: 'Name',
+      id: 'name',
+      Cell: (row) => {
+        return <div style={{ color: 'red' }}>${row.name}</div>;
+      },
+      component: 'th',
+    },
+    {
+      label: 'Age',
+      id: 'age',
+    },
+    {
+      label: 'Year',
+      id: 'year',
+    },
+  ];
+
   if (isLoading) {
     return 'Loading...';
   }
 
   return (
     <div>
-      <CommonStyles.Table data={{ headCells, body: rows }} />
+      <CommonStyles.Table data={data} columns={columns} hasCheckbox={false} />
     </div>
   );
 };
