@@ -33,6 +33,10 @@ import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import { AiOutlineWindows, AiOutlineMail, AiOutlineSetting } from "react-icons/ai";
+import { GrLanguage, GrNotification } from "react-icons/gr";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 const CommonIcons = {
   Add,
@@ -68,6 +72,13 @@ const CommonIcons = {
   Ecommerce: ShoppingCartIcon,
   FormValidation: FactCheckIcon,
   FormsWizard: SkipNextIcon,
+  Window: AiOutlineWindows,
+  Language: GrLanguage,
+  Notification: GrNotification,
+  Mail: AiOutlineMail,
+  Setting: AiOutlineSetting,
+  User: AccountCircleIcon,
+  Bell: NotificationsNoneIcon,
 };
 
 export default CommonIcons;

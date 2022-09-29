@@ -2,6 +2,7 @@ import NumberFormatCustom from './NumberFormat';
 import TextField from './TextField';
 import Button from './Button';
 import Typography from './Typography';
+import PopoverMui from './Popover';
 import Table from './Table';
 
 const CommonStyles = {
@@ -9,6 +10,7 @@ const CommonStyles = {
   NumberFormat: NumberFormatCustom,
   Button,
   Typography,
+  PopoverMui,
   Table,
 };
 

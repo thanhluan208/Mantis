@@ -9,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { makeStyles } from '@mui/styles';
 import CommonIcons from 'components/CommonIcons';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material';
 import SimpleBarReact from 'simplebar-react';
 
 import 'simplebar/src/simplebar.css';
@@ -35,8 +36,11 @@ const useStyles = makeStyles((theme) => {
       },
     },
     toolbar: {
-      background: theme.custom.colors.black,
+      background: theme.custom.colors.white,
       color: theme.custom.colors.white,
+    },
+    divider: {
+      borderColor: `${theme.custom.colors.lightblue} !important`,
     },
     topDrawer: {
       background: theme.custom.colors.white,
@@ -76,6 +80,7 @@ const LayoutWithDrawerAndAppbar = (props) => {
   //! State
   const { topDrawer, header, window, children, leftMenu = [] } = props;
   const classes = useStyles();
+  const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   //! Function
@@ -106,6 +111,8 @@ const LayoutWithDrawerAndAppbar = (props) => {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          boxShadow: 'none',
+          background: theme.custom.colors.white,
         }}
       >
         <Toolbar className={classes.toolbar}>
@@ -120,6 +127,7 @@ const LayoutWithDrawerAndAppbar = (props) => {
 
           {header}
         </Toolbar>
+        <Divider className={classes.divider} />
       </AppBar>
 
       <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
