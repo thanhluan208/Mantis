@@ -112,6 +112,7 @@ const LayoutWithDrawerAndAppbar = (props) => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           boxShadow: 'none',
+          background: theme.custom.colors.white,
         }}
       >
         <Toolbar className={classes.toolbar}>

@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import CommonStyles from 'components/CommonStyles';
 import { useAuthentication } from 'providers/AuthenticationProvider';
-import { Box, InputAdornment } from '@mui/material';
+import {
+  Badge,
+  Box,
+  Divider,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { SearchOutlined } from '@mui/icons-material';
 import CommonIcons from 'components/CommonIcons';
 
@@ -34,11 +44,15 @@ const useStyles = makeStyles((theme) => {
         fontSize: 20,
         backgroundColor: theme.custom.colors.gray,
         color: theme.custom.colors.black,
+        marginRight: '6px',
         boxShadow: 'none',
         '&:hover': {
           backgroundColor: '#d9d9d9 ',
           boxShadow: 'none',
         },
+      },
+      '& .btn-active': {
+        backgroundColor: '#d9d9d9 ',
       },
     },
   };
@@ -50,16 +64,100 @@ const Header = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openPopper = Boolean(anchorEl);
+  const [contentPopper, setContentPopper] = useState();
 
-  const handleOpenPopper = (event) => {
+  const handleOpenPopper = (event, value) => {
     setAnchorEl(event.currentTarget);
+    setContentPopper(value);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setContentPopper();
   };
 
+  const btnHeader = [
+    {
+      name: 'noti',
+      children: (
+        <Badge badgeContent={4} color="primary">
+          <CommonIcons.Bell />
+        </Badge>
+      ),
+      onClick: (e) => {
+        handleOpenPopper(e, 'noti');
+      },
+    },
+    {
+      name: 'setting',
+      children: <CommonIcons.Setting />,
+      onClick: (e) => {
+        handleOpenPopper(e, 'setting');
+      },
+    },
+  ];
   //! Function
-
+  const renderContentPopper = () => {
+    switch (contentPopper) {
+      case 'noti':
+        return (
+          <Box
+            sx={{
+              width: 200,
+            }}
+          >
+            <div style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center', paddingLeft: 16 }}>
+              Notifi
+            </div>
+            <Divider />
+            <List component="nav" aria-label="secondary mailbox folder">
+              <ListItemButton>
+                <ListItemText primary="Thong bao 1" />
+              </ListItemButton>
+              <ListItemButton>
+                <ListItemText primary="Thong bao 2" />
+              </ListItemButton>
+            </List>
+          </Box>
+        );
+      case 'user':
+        return (
+          <Box
+            sx={{
+              width: 200,
+            }}
+          >
+            <List>
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <CommonIcons.User />
+                  </ListItemIcon>
+                  <ListItemText primary="Trang ca nhan" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding onClick={logout}>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <CommonIcons.Logout />
+                  </ListItemIcon>
+                  <ListItemText primary="Logout" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Box>
+        );
+      case 'setting':
+        return (
+          <Box
+            sx={{
+              width: 200,
+            }}
+          >
+            <div>setting</div>
+          </Box>
+        );
+    }
+  };
   //! Render
   return (
     <div className={classes.footer}>
@@ -78,10 +176,22 @@ const Header = (props) => {
         />
       </div>
       <div className={classes.right}>
-        <CommonStyles.Button className="btn-icon">
-          <CommonIcons.Setting />
-        </CommonStyles.Button>
-        <CommonStyles.Button variant="outline" onClick={handleOpenPopper}>
+        {btnHeader.map((item) => (
+          <CommonStyles.Button
+            className={`btn-icon ${contentPopper === item.name ? 'btn-active' : ''}`}
+            key={item.name}
+            onClick={item.onClick}
+          >
+            {item.children}
+          </CommonStyles.Button>
+        ))}
+        <CommonStyles.Button
+          variant="outline"
+          className={` ${contentPopper === 'user' ? 'btn-active' : ''}`}
+          onClick={(e) => {
+            handleOpenPopper(e, 'user');
+          }}
+        >
           <div className="user-info">
             <img
               className="img"
@@ -93,13 +203,7 @@ const Header = (props) => {
         </CommonStyles.Button>
       </div>
       <CommonStyles.PopoverMui open={openPopper} anchorEl={anchorEl} handleClose={handleClose}>
-        <Box
-          sx={{
-            width: 300,
-            height: 300,
-            backgroundColor: 'red',
-          }}
-        />
+        {renderContentPopper()}
       </CommonStyles.PopoverMui>
     </div>
   );

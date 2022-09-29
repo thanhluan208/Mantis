@@ -35,6 +35,8 @@ import FactCheckIcon from '@mui/icons-material/FactCheck';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { AiOutlineWindows, AiOutlineMail, AiOutlineSetting } from "react-icons/ai";
 import { GrLanguage, GrNotification } from "react-icons/gr";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 const CommonIcons = {
   Add,
@@ -74,7 +76,9 @@ const CommonIcons = {
   Language: GrLanguage,
   Notification: GrNotification,
   Mail: AiOutlineMail,
-  Setting: AiOutlineSetting
+  Setting: AiOutlineSetting,
+  User: AccountCircleIcon,
+  Bell: NotificationsNoneIcon,
 };
 
 export default CommonIcons;
